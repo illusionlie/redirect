@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+  <meta name="robots" content="index, follow" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" href="favicon.ico">
+  <title>Redirect Page</title>
+  <style type="text/css">
+    html, body {width: 100%; height: 100%; margin: 0; padding: 0;}
+    body {background-color: #ffffff; color: #000000; font-family:-apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, "Helvetica Neue",Arial, sans-serif; font-size: 16px; line-height: 1.7em;-webkit-font-smoothing: antialiased; text-align: center; background-size: cover; background-position: center center; background-repeat: no-repeat; backdrop-filter: blur(4px);}
+    h1 { text-align: center; font-weight:700; margin: 16px 0; font-size: 32px; color:#000000; line-height: 1.25;}
+    p {font-size: 20px; font-weight: 400; margin: 8px 0;}
+    p, .attribution {text-align: center;}
+    #spinner {margin: 0 auto 30px auto; display: block;}
+    .attribution {margin-top: 32px;}
+    @keyframes fader     { 0% {opacity: 0.2;} 50% {opacity: 1.0;} 100% {opacity: 0.2;} }
+    @-webkit-keyframes fader { 0% {opacity: 0.2;} 50% {opacity: 1.0;} 100% {opacity: 0.2;} }
+    a { color: #2c7cb0; text-decoration: none; -moz-transition: color 0.15s ease; -o-transition: color 0.15s ease; -webkit-transition: color 0.15s ease; transition: color 0.15s ease; }
+    a:hover{color: #f4a15d}
+    .attribution{font-size: 18px; line-height: 1.5; font-weight: bold; color: #f83838d8;}
+    #cf-wrapper #challenge-form { padding-top:25px; padding-bottom:25px; }
+    #cf-hcaptcha-container { text-align:center;}
+    #cf-hcaptcha-container iframe { display: inline-block;}
+    .container {
+      max-width: 700px;
+      min-width: none;
+      min-height: 450px;
+      margin: 50px auto;
+      background: #ffffff6a;
+      padding: 25px;
+      border-radius: 18px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(5px);
+	  }
+    @media screen and (max-width: 700px) {
+      #check_title {
+        font-size: 25px;
+      }
+      #check_text1, #check_text2 {
+        font-size: 18px;
+      }
+    }
+    input {
+      width: 70%;
+      padding: 15px; 
+      border: 3px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      margin-top: 20px;
+    }
+  </style>
+  <body>
+    <table width="100%" height="100%" cellpadding="20">
+      <tr>
+        <td align="center" valign="middle">
+            <div class="cf-browser-verification cf-im-under-attack">
+    <noscript>
+      <h1 data-translate="turn_on_js" style="color:#bd2426;">请启用JavaScript并刷新此页面。</h1>
+    </noscript>
+    <div id="cf-content" style="display:none" class="container">
+      <h1 id="check_title" style="padding: 10px;"><span style="color:#f83838d8;">Base64 URL</span> 重定向</h1>
+      <p style="display: inline; padding: 5px;">输入一个希望跳转的URL</p>
+      <input type="text" id="urlInput" placeholder="请输入URL">
+      <br><p style="display: inline; padding: 5px;">然后...是结果: </p><br>
+      <input type="text" id="encodedUrl" placeholder="结果URL">
+      <br /> 
+      <button id="copyButton">复制</button>
+    </div>
+    <script type="text/javascript">
+      document.getElementById('urlInput').addEventListener('input', function(event) {
+        if (event.isTrusted) {
+          let targetURL = event.target.value;
+          if (targetURL) {
+            let encodedURL = btoa(encodeURIComponent(targetURL));
+            document.getElementById('encodedUrl').value = `${window.location.origin}?to=` + encodedURL;
+          }
+        }
+      });
+      document.getElementById('copyButton').addEventListener('click', function() {
+        const encodedUrlValue = document.getElementById('encodedUrl').value;
+        navigator.clipboard.writeText(encodedUrlValue).then(() => {
+          alert('已复制到剪贴板');
+        }).catch((err) => {
+          console.error('复制失败: ', err);
+        });
+      });
+    </script>
+    <script>
+        (function(){
+          document.getElementById('cf-content').style.display = 'block';
+        }());
+        function randomBackground() {
+          const numImages = 8;
+          const randomIndex = Math.floor(Math.random() * numImages) + 1;
+          const imageName = `background${randomIndex}.webp`;
+          document.body.style.backgroundImage = `url(/background/${imageName})`;
+        };
+        function checkto() {
+          const urlParams = new URLSearchParams(window.location.search);
+          const callback = urlParams.get('to');
+          if (callback) {
+            document.getElementById('cf-content').style.display = 'none';
+            const decodedCallback = decodeURIComponent(atob(callback));
+            window.location.href = decodedCallback;
+          } else {
+            setTimeout(checkto, 1000);
+          }
+        }
+        document.addEventListener('DOMContentLoaded', randomBackground);
+        checkto();
+      </script>
+  </body>
+</html>
