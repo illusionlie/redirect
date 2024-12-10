@@ -75,7 +75,7 @@
           let targetURL = event.target.value;
           if (targetURL) {
             let encodedURL = btoa(encodeURIComponent(targetURL));
-            document.getElementById('encodedUrl').value = `${window.location.origin}?to=` + encodedURL;
+            document.getElementById('encodedUrl').value = `${window.location.origin}${window.location.pathname}?to=` + encodedURL;
           }
         }
       });
@@ -96,7 +96,7 @@
           const numImages = 8;
           const randomIndex = Math.floor(Math.random() * numImages) + 1;
           const imageName = `background${randomIndex}.webp`;
-          document.body.style.backgroundImage = `url(/background/${imageName})`;
+          document.body.style.backgroundImage = `url(${window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1)}/background/${imageName})`;
         };
         function checkto() {
           const urlParams = new URLSearchParams(window.location.search);
